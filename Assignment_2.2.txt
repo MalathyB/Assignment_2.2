@@ -1,0 +1,78 @@
+1. HDFS
+   * HDFS is a distributed file system that provides high-performance access to data across Hadoop clusters
+   * The Hadoop Distributed File System (HDFS) is designed to store very large data sets reliably, and to stream those data sets at high bandwidth to user applications.
+   * In a large cluster, thousands of servers both host directly attached storage and execute user application tasks
+   * An improtant characteristic of hadoop is the partitioning of data and computation across many of host, and the exection of application computations in parllel close to their data
+   * HDFS stores filesystem metadata and application data separately
+   * HDFS stores metadata in namenode and application data in datanode
+   * Architecture:
+      ->Namenode
+         - It  stores the name and addresses of datanodes
+         - The HDFS namespace is a hierachy of files and directories
+         - The file content is split into large blocks and each block of the file is independently replicated at multiple datanodes
+      ->Datanode
+         - Datanodes are used to store the data in form of blocks
+         - They store and retrieve data in form of data blocks after communication with Namenodes
+      ->HDFS Client
+         - User application access the filesystem using the HDFS client,a library that export the HDFS filesystem interface
+         - HDFS support operations to read,write and delete files ,and to create and delete directories
+      ->Checkpointnode
+         - It combines the existing checkpoint and journal to create a new checkpoint and an empty journal
+         - It runs in a different host from the namenode 
+      ->Backupnode
+         - The backupnode is capable of creating periodic checkpoints,but in addition it maintain an in-memory,up-to-date image of the filesystem namespace that is always synchronized with the state of the namenode
+   
+ 
+
+
+2. Hadoop cluster
+  
+   * A Hadoop cluster is essentially a computational cluster that distributes the data analysis workload across multiple cluster nodes that work to process the data in parallel.
+   * It is designed for storing and analyzing huge amount of unstructured data in a distributed computing environment
+   * Hadoop cluster are known for boosting the speed of data analysis applications
+   * Hadoop clusters are often referred to as "shared nothing" systems because the only thing that is shared between nodes is the network that connects them 
+   * If a cluster processing power is overwhelmed by growing volumes of data ,additional nodes can be added to increase throuput
+   * Users of hadoop cluster are facebook,google,ibm,etc
+   * Benefit:
+        - Analysing big data
+        - Scalability
+        - Parallel processing
+        - highly resistant to failure 
+   * Hadoop cluster has 3 components:
+        1 Client
+        2 Master
+        3 Slave
+   * Client:
+        - Client is neither master nor slave,
+        - It play a role of loading the data into cluster,
+        - submit MapReduce jobs describing how the data should be processed and then retrieve the data to see the response after job completion
+   * Masters:
+        - The Masters consists of 3 components
+             NameNode, Secondary Node name and JobTracker
+        * NameNode
+             NameNode does NOT store the files but only the file's metadata
+        * JobTracker
+             JobTracker coordinates the parallel processing of data using MapReduce
+        * Secondary Name Node
+             Secondary Node is NOT the backup or high availability node for Name node.
+   * Slaves
+        - Slave nodes are the majority of machines in Hadoop Cluster and are responsible to
+              ->Store the data
+              ->Process the computation
+3. HDFS Blocks
+
+   * A block is the smallest unit of data that can be stored or retrieved from the disk
+   * Hadoop distributed file system also stores the data in terms of blocks
+   * Block size in HDFS is very large
+   * The default size of HDFS block is 64MB
+   * The files are split into 64MB blocks and then stored into the hadoop filesystem
+   * The hadoop application is responsible for distributing the data blocks across multiple nodes
+   * Benefits:
+       - The blocks are of fixed size,so it is very easy to  calculate the number of blocks that can be stored on a disk
+       - Blockes are easy to replicate between the datanodes
+       - Fault tolerance
+       - High availability
+   * The main reason for having the HDFS blocks in large size is to reduce the cost of seek time
+   * In general, the seek time is 10ms and disk transfer rate is 100MB/s
+   * To make the seek time 1% of the disk transfer rate, the block size should be 100MB
+  
